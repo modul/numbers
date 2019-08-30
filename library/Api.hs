@@ -2,9 +2,16 @@
 
 module Api (
   -- * Data types
+  -- ** Search argument
   Month, Day, Number (..), Date (..), RangeElement (..),
+  -- ** Options
+  ApiOptions, ApiOption (..), NotFoundAction (..),
   -- * General API methods
-  random, trivia, math, year, date,
+  random, randomWith,
+  trivia, triviaWith,
+  math, mathWith,
+  year, yearWith,
+  date, dateWith,
   -- * Convenience Methods
   -- ** Getting specific entries
   triviaFact, mathFact, yearFact, dateFact, dayOfYearFact,
@@ -12,14 +19,13 @@ module Api (
   triviaRandom, mathRandom, yearRandom, dateRandom,
 ) where
 
-import Control.Lens
-import Network.Wreq
-import Data.List (intercalate)
+import Network.HTTP.Simple
 import Data.Function ((&))
-import qualified Data.ByteString.Lazy.Char8 as L8
+import Data.List (intercalate)
+import Data.ByteString.Char8 (pack, unpack, ByteString)
 
-apiBaseUrl :: String
-apiBaseUrl = "http://numbersapi.com"
+apiHost :: ByteString
+apiHost = "numbersapi.com"
 
 -- * Data types
 
@@ -47,6 +53,22 @@ data ApiEndpoint = GetTrivia Number
                  | GetDate Date
                  | GetRandom
 
+-- | API options that can be used with any '…With' method
+type ApiOptions = [ApiOption]
+
+-- | Possible API options that can be used on most endpoints
+data ApiOption = Fragment -- ^ returns the fact as a sentence fragment
+               | DefaultMsg ByteString -- ^ sets the default response message if requested number has no entry
+               | NotFound NotFoundAction -- ^ selects an alternative action if requested number has no entry
+               | MinLimit Int -- ^ lower limit (inclusive) when requesting random values
+               | MaxLimit Int -- ^ upper limit (inclusive) when requesting random values
+               deriving Show
+
+-- | Describes an alternative action if a requested number has no entry
+data NotFoundAction = CeilIfNotFound -- ^ use the next higher number which has an entry
+                    | FloorIfNotFound -- ^ use the next lower number which has an entry
+                    | DefaultIfNotFound -- ^ return the default response
+
 instance Show Number where
   show (Number x) = show x
   show (Range xs) = show <$> xs & intercalate ","
@@ -68,15 +90,48 @@ instance Show ApiEndpoint where
   show (GetDate   d) = show d ++ "/date"
   show  GetRandom    = "random"
 
-urlJoin :: [String] -> String
-urlJoin = intercalate "/"
+instance Show NotFoundAction where
+  show CeilIfNotFound = "ceil"
+  show FloorIfNotFound = "floor"
+  show DefaultIfNotFound = "default"
 
+-- | By default, no API options are used
+defaultApiOptions :: ApiOptions
+defaultApiOptions = []
+
+-- | Helper function to show a value as BS.ByteString
+bshow :: Show a => a -> ByteString
+bshow = pack . show
+
+-- | Builds a key-value-pair from an API option
+optionToQueryItem :: ApiOption -> QueryItem
+optionToQueryItem  Fragment      = ("fragment", Nothing)
+optionToQueryItem (DefaultMsg m) = ("default", Just m)
+optionToQueryItem (NotFound   a) = ("notfound", Just $ bshow a)
+optionToQueryItem (MinLimit   x) = ("min", Just $ bshow x)
+optionToQueryItem (MaxLimit   x) = ("max", Just $ bshow x)
+
+-- | Builds a query string from given API options
+optionsToQuery :: ApiOptions -> Query
+optionsToQuery = map optionToQueryItem
+
+-- | Builds an HTTP request with given API options and endpoint description
+makeApiRequestWith :: ApiOptions -> ApiEndpoint -> Request
+makeApiRequestWith opts ep = defaultRequest
+                           & setRequestHost apiHost
+                           & setRequestPath (bshow ep)
+                           & addToRequestQueryString (optionsToQuery opts)
+
+-- | Actually make a request to given endpoint using given options
+apiCallWith :: ApiOptions -> ApiEndpoint -> IO String
+apiCallWith opts e = do
+  let request = makeApiRequestWith opts e
+  r <- httpBS request
+  return . unpack . getResponseBody $ r
+
+-- | Actually make a request to given endpoint using defaultApiOptions
 apiCall :: ApiEndpoint -> IO String
-apiCall e = do
-  r <- get url
-  let result = r ^. responseBody
-  return . L8.unpack $ result
-  where url = urlJoin [apiBaseUrl, show e]
+apiCall = apiCallWith defaultApiOptions
 
 -- * General API methods
 
@@ -84,21 +139,41 @@ apiCall e = do
 random :: IO String
 random = apiCall GetRandom
 
+-- | Same as 'random' that sets optional parameters
+randomWith :: ApiOptions -> IO String
+randomWith opts = apiCallWith opts GetRandom
+
 -- | Retrieve a trivia entry about the given argument
 trivia :: Number -> IO String
 trivia = apiCall . GetTrivia
+
+-- | Same as 'trivia' that sets optional parameters
+triviaWith :: ApiOptions -> Number -> IO String
+triviaWith opts = apiCallWith opts . GetTrivia
 
 -- | Retrieve a math entry about the given argument
 math :: Number -> IO String
 math = apiCall . GetMath
 
+-- | Same as 'math' that sets optional parameters
+mathWith :: ApiOptions -> Number -> IO String
+mathWith opts = apiCallWith opts . GetMath
+
 -- | Retrieve a year entry about the given argument
 year :: Number -> IO String
 year = apiCall . GetYear
 
+-- | Same as 'year' that sets optional parameters
+yearWith :: ApiOptions -> Number -> IO String
+yearWith opts = apiCallWith opts . GetYear
+
 -- | Retrieve a date entry about the given argument
 date :: Date -> IO String
 date = apiCall . GetDate
+
+-- | Same as 'date' that sets optional parameters
+dateWith :: ApiOptions -> Date -> IO String
+dateWith opts = apiCallWith opts . GetDate
 
 -- * Convenience methods
 -- ** Getting specific entries
@@ -122,14 +197,14 @@ mathRandom = math RandomNumber
 yearFact :: Int -> IO String
 yearFact = year . Number
 
+-- | Retrieve a fact about the given date
+dateFact :: (Month, Day) -> IO String
+dateFact = date . uncurry Date
+
 -- ** Getting random entries
 -- | Retrieve a fact about a random year
 yearRandom :: IO String
 yearRandom = year RandomNumber
-
--- | Retrieve a fact about the given date
-dateFact :: (Month, Day) -> IO String
-dateFact = date . uncurry Date
 
 -- | Retrieve a fact about a random date
 dateRandom :: IO String

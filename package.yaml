@@ -23,9 +23,8 @@ ghc-options: -Wall
 library:
   dependencies:
   - base
-  - wreq
-  - lens
   - bytestring
+  - http-conduit
   source-dirs: library
 
 executables:
