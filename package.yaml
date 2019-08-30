@@ -1,0 +1,55 @@
+# This YAML file describes your package. Stack will automatically generate a
+# Cabal file when you run `stack build`. See the hpack website for help with
+# this file: <https://github.com/sol/hpack>.
+name: numbers
+version: '0.0.0'
+github: "modul/numbers"
+license: MIT
+author: "Remo Giermann"
+maintainer: "Remo Giermann"
+# synopsis: A new Haskeleton package.
+# description: numbers is a new Haskeleton package.
+# category: Other
+
+extra-source-files:
+- CHANGELOG.md
+- LICENSE.md
+- package.yaml
+- README.md
+- stack.yaml
+
+ghc-options: -Wall
+
+library:
+  dependencies:
+  - base
+  - wreq
+  - lens
+  - bytestring
+  source-dirs: library
+
+executables:
+  numbers:
+    source-dirs: executable
+    main: Main.hs
+    dependencies:
+    - base
+    - numbers
+    ghc-options:
+    - -rtsopts
+    - -threaded
+    - -with-rtsopts=-N
+
+tests:
+  numbers-test-suite:
+    source-dirs: test-suite
+    main: Main.hs
+    dependencies:
+    - base
+    - numbers
+    - tasty
+    - tasty-hspec
+    ghc-options:
+    - -rtsopts
+    - -threaded
+    - -with-rtsopts=-N
