@@ -12,7 +12,7 @@ stack build
 stack install
 ```
 
-Additionally you can run unit tests or generate library documentation:
+To run unit tests or generate library documentation:
 
 ``` sh
 # Run the test suite.
