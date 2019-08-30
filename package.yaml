@@ -7,9 +7,9 @@ github: "modul/numbers"
 license: MIT
 author: "Remo Giermann"
 maintainer: "Remo Giermann"
-# synopsis: A new Haskeleton package.
-# description: numbers is a new Haskeleton package.
-# category: Other
+synopsis: Interface to numbersapi.com REST service
+description: Numbers can be used as a library or CLI to retrieve trivia from the open Numbers API.
+category: API, Client, CLI
 
 extra-source-files:
 - CHANGELOG.md
