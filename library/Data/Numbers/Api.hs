@@ -1,22 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Api (
+module Data.Numbers.Api (
   -- * Data types
   -- ** Search argument
-  Month, Day, Number (..), Date (..), RangeElement (..),
-  -- ** Options
+  Number (..), RangeElement (..), Date (..), Month, Day,
+  -- ** Lookup options
   ApiOptions, ApiOption (..), NotFoundAction (..),
-  -- * General API methods
-  random, randomWith,
-  trivia, triviaWith,
-  math, mathWith,
-  year, yearWith,
-  date, dateWith,
-  -- * Convenience Methods
-  -- ** Getting specific entries
-  triviaFact, mathFact, yearFact, dateFact, dayOfYearFact,
-  -- ** Getting random entries
-  triviaRandom, mathRandom, yearRandom, dateRandom,
+  -- ** API endpoints
+  ApiEndpoint (..),
+  -- * API requests
+  apiCall, apiCallWith
 ) where
 
 import Network.HTTP.Simple
@@ -29,7 +22,10 @@ apiHost = "numbersapi.com"
 
 -- * Data types
 
+-- A month
 type Month = Int
+
+-- A day
 type Day = Int
 
 -- | Describes a numerical argument used in API calls
@@ -122,94 +118,13 @@ makeApiRequestWith opts ep = defaultRequest
                            & setRequestPath (bshow ep)
                            & addToRequestQueryString (optionsToQuery opts)
 
--- | Actually make a request to given endpoint using given options
+-- | Send a request to given endpoint using given options
 apiCallWith :: ApiOptions -> ApiEndpoint -> IO String
 apiCallWith opts e = do
   let request = makeApiRequestWith opts e
   r <- httpBS request
   return . unpack . getResponseBody $ r
 
--- | Actually make a request to given endpoint using defaultApiOptions
+-- | Send a request to given endpoint using defaultApiOptions
 apiCall :: ApiEndpoint -> IO String
 apiCall = apiCallWith defaultApiOptions
-
--- * General API methods
-
--- | Retrieve a random fact
-random :: IO String
-random = apiCall GetRandom
-
--- | Same as 'random' that sets optional parameters
-randomWith :: ApiOptions -> IO String
-randomWith opts = apiCallWith opts GetRandom
-
--- | Retrieve a trivia entry about the given argument
-trivia :: Number -> IO String
-trivia = apiCall . GetTrivia
-
--- | Same as 'trivia' that sets optional parameters
-triviaWith :: ApiOptions -> Number -> IO String
-triviaWith opts = apiCallWith opts . GetTrivia
-
--- | Retrieve a math entry about the given argument
-math :: Number -> IO String
-math = apiCall . GetMath
-
--- | Same as 'math' that sets optional parameters
-mathWith :: ApiOptions -> Number -> IO String
-mathWith opts = apiCallWith opts . GetMath
-
--- | Retrieve a year entry about the given argument
-year :: Number -> IO String
-year = apiCall . GetYear
-
--- | Same as 'year' that sets optional parameters
-yearWith :: ApiOptions -> Number -> IO String
-yearWith opts = apiCallWith opts . GetYear
-
--- | Retrieve a date entry about the given argument
-date :: Date -> IO String
-date = apiCall . GetDate
-
--- | Same as 'date' that sets optional parameters
-dateWith :: ApiOptions -> Date -> IO String
-dateWith opts = apiCallWith opts . GetDate
-
--- * Convenience methods
--- ** Getting specific entries
--- | Retrieve a trivia fact about the given integer
-triviaFact :: Int -> IO String
-triviaFact = trivia . Number
-
--- | Retrieve a trivia fact about a random integer
-triviaRandom :: IO String
-triviaRandom = trivia RandomNumber
-
--- | Retrieve a math fact about the given integer
-mathFact :: Int -> IO String
-mathFact = math . Number
-
--- | Retrieve a math fact about a random integer
-mathRandom :: IO String
-mathRandom = math RandomNumber
-
--- | Retrieve a fact about the given year
-yearFact :: Int -> IO String
-yearFact = year . Number
-
--- | Retrieve a fact about the given date
-dateFact :: (Month, Day) -> IO String
-dateFact = date . uncurry Date
-
--- ** Getting random entries
--- | Retrieve a fact about a random year
-yearRandom :: IO String
-yearRandom = year RandomNumber
-
--- | Retrieve a fact about a random date
-dateRandom :: IO String
-dateRandom = date RandomDate
-
--- | Retrieve a fact about the given day of (any) year
-dayOfYearFact :: Day -> IO String
-dayOfYearFact = date . DayOfYear

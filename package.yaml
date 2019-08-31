@@ -7,7 +7,7 @@ github: "modul/numbers"
 license: MIT
 author: "Remo Giermann"
 maintainer: "Remo Giermann"
-synopsis: Interface to the REST service at numbersapi.com
+synopsis: Client interface to the numbersapi.com trivia database
 description: Numbers can be used as a library or CLI to retrieve trivia about numbers from the open Numbers API.
 category: API, Client, CLI
 
@@ -26,6 +26,8 @@ library:
   - bytestring
   - http-conduit
   source-dirs: library
+  exposed-modules:
+    - Data.Numbers.Client
 
 executables:
   numbers:
