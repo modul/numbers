@@ -7,8 +7,8 @@ github: "modul/numbers"
 license: MIT
 author: "Remo Giermann"
 maintainer: "Remo Giermann"
-synopsis: Interface to numbersapi.com REST service
-description: Numbers can be used as a library or CLI to retrieve trivia from the open Numbers API.
+synopsis: Interface to the REST service at numbersapi.com
+description: Numbers can be used as a library or CLI to retrieve trivia about numbers from the open Numbers API.
 category: API, Client, CLI
 
 extra-source-files:

@@ -1,27 +1,13 @@
 # Numbers
 
-Numbers is a Haskell library to retrieve trivia from the open [Numbers API](numbersapi.com).
-This project can also be built as a commandline executable.
+Numbers is a Haskell library and commandline tool to retrieve trivia about numbers from the open [Numbers API](numbersapi.com).
 
 ## Installation
 
-You can build and install the cli executable using [stack](https://docs.haskellstack.org/en/stable/README/#how-to-install):
+Use [stack](https://docs.haskellstack.org/en/stable/README/#how-to-install) to install:
 
 ```sh
 stack build
 stack install
 ```
 
-To run unit tests or generate library documentation:
-
-``` sh
-# Run the test suite.
-stack test
-
-# Generate documentation.
-stack haddock
-```
-
-## Commandline usage
-
-## Library usage
