@@ -37,6 +37,9 @@ import Data.Attoparsec.Text hiding (Number)
 import Data.Numbers.Client (Number (..), RangeElement (..), Date (..))
 
 -- parsing a number argument
+
+-- fromRight GetRandom $ GetTrivia <$> (parseOnly number "1,2,3..10")
+
 number :: Parser Number
 number =  Range  <$> rangeElement `sepBy` ","
       <|> Number <$> decimal
