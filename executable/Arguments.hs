@@ -3,15 +3,15 @@
 -- * Usage should be as follows
 --
 -- get entry of specific category (trivia, math, year, date):
---  numbers --trivia [NUMBER] 
+--  numbers --trivia [NUMBER] # same as numbers [NUMBER]
 --  numbers --math [NUMBER]
 --  numbers --year [NUMBER]
 --  numbers --date [DATE]
 -- gets an entry about a random number or date if argument is missing
 --
--- getting an entry in a random category:
---  numbers [INT | RANGE | DATE ]
--- gets an entry about a random number in a random category if argument is missing
+-- getting a trivia entry about given number or date
+--  numbers [INT | RANGE | DATE ] # same as numbers --trivia
+-- gets an entry about a random number if argument is missing
 --
 -- argument syntax should be:
 --  NUMBER: integer | RANGE
