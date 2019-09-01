@@ -65,5 +65,6 @@ rangeElement =  Interval <$> decimal <* string ".." <*> decimal
             <|> Single   <$> decimal
 
 date :: Parser Date
-date =  Date <$> decimal <* char '/' <*> decimal
+date =  endOfInput *> pure RandomDate
+    <|> Date <$> decimal <* char '/' <*> decimal
     <|> DayOfYear <$> decimal
