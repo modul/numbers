@@ -56,7 +56,7 @@ makeParser p = parseOnly p . pack
 
 
 number :: Parser Number
-number =  Range  <$> rangeElement `sepBy` ","
+number =  Range  <$> rangeElement `sepBy1` ","
       <|> Number <$> decimal
 
 rangeElement :: Parser RangeElement
