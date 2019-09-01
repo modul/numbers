@@ -30,15 +30,30 @@
 -- --notfound=CEIL | FLOOR | DEFAULT  
 --
 
-module Arguments where
+module Arguments (
+    parseDate,
+    parseNumber
+) where
 
 import Control.Applicative
-import Data.Attoparsec.Text hiding (Number)
+import Data.Attoparsec.Text hiding (Number, number)
+import Data.Text (pack)
 import Data.Numbers.Client (Number (..), RangeElement (..), Date (..))
 
--- parsing a number argument
+type ArgumentParser a = String -> Either String a
 
--- fromRight GetRandom $ GetTrivia <$> (parseOnly number "1,2,3..10")
+-- use to parse a numererical argument from the commandline
+parseNumber :: ArgumentParser Number
+parseNumber = makeParser number
+
+-- use to parse a date argument from the commandline
+parseDate :: ArgumentParser Date
+parseDate = makeParser date
+
+-- build an argument parser
+makeParser :: Parser a -> ArgumentParser a    
+makeParser p = parseOnly p . pack
+
 
 number :: Parser Number
 number =  Range  <$> rangeElement `sepBy` ","
@@ -48,7 +63,6 @@ rangeElement :: Parser RangeElement
 rangeElement =  Interval <$> decimal <* string ".." <*> decimal
             <|> Single   <$> decimal
 
--- parsing a date argument
 date :: Parser Date
 date =  Date <$> decimal <* char '/' <*> decimal
     <|> DayOfYear <$> decimal
