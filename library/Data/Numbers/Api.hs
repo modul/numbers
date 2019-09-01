@@ -9,7 +9,7 @@ module Data.Numbers.Api (
   -- ** API endpoints
   ApiEndpoint (..),
   -- * API requests
-  apiCall, apiCallWith
+  defaultApiOptions, apiCall, apiCallWith
 ) where
 
 import Network.HTTP.Simple
