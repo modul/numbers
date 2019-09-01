@@ -29,10 +29,14 @@
 -- --default=STR
 -- --notfound=CEIL | FLOOR | DEFAULT  
 --
+-- Hint: without a category, the argument could be a DATETUPLE or NUMBER
 
 module Arguments (
     parseDate,
-    parseNumber
+    parseDateTuple,
+    parseNumber,
+    LookupType (..),
+    tryParse
 ) where
 
 import Control.Applicative
@@ -42,19 +46,34 @@ import Data.Numbers.Client (Number (..), RangeItem (..), Date (..))
 
 type ArgumentParser a = String -> Either String a
 
--- | use this to parse a numererical argument from the commandline
+data LookupType = IsNumber Number | IsDate Date deriving (Show)
+
+-- * Parsing the supplied argument
+
+-- | Use this to parse any number argument from the commandline
 parseNumber :: ArgumentParser Number
 parseNumber = makeParser number
 
--- | use this to parse a date argument from the commandline
+-- | Use this to parse any date argument from the commandline
 parseDate :: ArgumentParser Date
 parseDate = makeParser date
 
--- | build an argument parser
+-- | Use this to parse only a date in the form of Month/Day
+parseDateTuple :: ArgumentParser Date
+parseDateTuple = makeParser dateTuple
+
+-- | Use this to parse either a date tuple or a number (if both could be possible)
+tryParse :: String -> Either String LookupType
+tryParse s =  IsDate <$> parseDateTuple s
+          <|> IsNumber <$> parseNumber s
+
+-- | Builds an argument parser
 makeParser :: Parser a -> ArgumentParser a    
 makeParser p = parseOnly p . pack
 
+-- * Actual parsers
 
+-- | Parse number as defined in API
 number :: Parser Number
 number =  endOfInput *> pure RandomNumber
       <|> Number <$> decimal <* endOfInput
@@ -65,7 +84,12 @@ rangeItem :: Parser RangeItem
 rangeItem =  Interval <$> decimal <* string ".." <*> decimal
             <|> Single   <$> decimal
 
+-- | Parse a date as defined in API
 date :: Parser Date
 date =  endOfInput *> pure RandomDate
-    <|> Date <$> decimal <* char '/' <*> decimal
-    <|> DayOfYear <$> decimal
+    <|> dateTuple
+    <|> DayOfYear <$> decimal <* endOfInput
+
+-- | Parse a date tuple as defined in API
+dateTuple :: Parser Date
+dateTuple = Date <$> decimal <* char '/' <*> decimal <* endOfInput
