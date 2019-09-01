@@ -3,7 +3,7 @@
 module Data.Numbers.Api (
   -- * Data types
   -- ** Search argument
-  Number (..), RangeElement (..), Date (..), Month, Day,
+  Number (..), RangeItem (..), Date (..), Month, Day,
   -- ** Lookup options
   ApiOptions, ApiOption (..), NotFoundAction (..),
   -- ** API endpoints
@@ -30,7 +30,7 @@ type Day = Int
 
 -- | Describes a numerical argument used in API calls
 data Number = Number Int -- ^ a single integer
-            | Range [RangeElement] -- ^ a range of integers
+            | Range [RangeItem] -- ^ a range of integers
             | RandomNumber -- ^ let the API choose a random integer
 
 -- | Describes a date argument used in API calls
@@ -39,8 +39,8 @@ data Date = Date Month Day
           | RandomDate -- ^ let the API choose a random date
 
 -- | Describes part of a numerical range
-data RangeElement = Single Int -- ^ single integer
-                  | Interval Int Int -- ^ a closed interval from a to b
+data RangeItem = Single Int -- ^ single integer
+               | Interval Int Int -- ^ a closed interval from a to b
 
 -- | Describes all available endpoints with its arguments
 data ApiEndpoint = GetTrivia Number
@@ -75,7 +75,7 @@ instance Show Date where
   show (DayOfYear d) = show d
   show RandomDate = "random"
 
-instance Show RangeElement where
+instance Show RangeItem where
   show (Single x) = show x
   show (Interval a b) = show a ++ ".." ++ show b
 

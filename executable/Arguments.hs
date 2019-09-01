@@ -38,7 +38,7 @@ module Arguments (
 import Control.Applicative
 import Data.Attoparsec.Text hiding (Number, number)
 import Data.Text (pack)
-import Data.Numbers.Client (Number (..), RangeElement (..), Date (..))
+import Data.Numbers.Client (Number (..), RangeItem (..), Date (..))
 
 type ArgumentParser a = String -> Either String a
 
@@ -58,10 +58,11 @@ makeParser p = parseOnly p . pack
 number :: Parser Number
 number =  endOfInput *> pure RandomNumber
       <|> Number <$> decimal <* endOfInput
-      <|> Range  <$> rangeElement `sepBy1` "," <* endOfInput
+      <|> Range  <$> rangeItem `sepBy1` "," <* endOfInput
 
-rangeElement :: Parser RangeElement
-rangeElement =  Interval <$> decimal <* string ".." <*> decimal
+-- | Parse a range item as defined in API
+rangeItem :: Parser RangeItem
+rangeItem =  Interval <$> decimal <* string ".." <*> decimal
             <|> Single   <$> decimal
 
 date :: Parser Date
