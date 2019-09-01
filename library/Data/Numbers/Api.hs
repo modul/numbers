@@ -22,10 +22,10 @@ apiHost = "numbersapi.com"
 
 -- * Data types
 
--- A month
+-- | A month
 type Month = Int
 
--- A day
+-- | A day
 type Day = Int
 
 -- | Describes a numerical argument used in API calls

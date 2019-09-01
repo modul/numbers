@@ -37,6 +37,7 @@ executables:
     - base
     - numbers
     - attoparsec
+    - bytestring
     - cmdargs
     - text
     ghc-options:
