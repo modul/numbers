@@ -5,8 +5,8 @@
 
 import System.Console.CmdArgs.Implicit
 
-import Arguments
-import Data.Numbers.Client 
+import Data.Numbers.Input
+import Data.Numbers.Client
 
 import Data.ByteString.Char8 (pack)
 import Data.Maybe (catMaybes)

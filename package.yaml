@@ -25,9 +25,11 @@ library:
   - base
   - bytestring
   - http-conduit
+  - attoparsec
   source-dirs: library
   exposed-modules:
     - Data.Numbers.Client
+    - Data.Numbers.Input
 
 executables:
   numbers:
@@ -36,7 +38,6 @@ executables:
     dependencies:
     - base
     - numbers
-    - attoparsec
     - bytestring
     - cmdargs
     - text
