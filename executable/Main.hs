@@ -7,6 +7,7 @@ import System.Console.CmdArgs.Implicit
 
 import Data.Numbers.Input
 import Data.Numbers.Client
+import Data.Numbers.Api
 
 import Data.ByteString.Char8 (pack)
 import Data.Maybe (catMaybes)
@@ -49,7 +50,7 @@ numbers = Numbers {
 
 main :: IO ()
 main = do
-    opts@(Numbers {..}) <- cmdArgs numbers
+    opts@Numbers {..} <- cmdArgs numbers
     let apiOpts = getApiOptions opts
     result <- case run apiOpts category value of
                 Left _ -> return "Invalid argument"

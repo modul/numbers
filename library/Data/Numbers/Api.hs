@@ -4,6 +4,7 @@ Module      : Api
 Description : API definitions for numbersapi.com
 
 This module defines all endpoints and data types used to interface numbersapi.com.
+More convenient client methods to retrieve number facts can be found in "Client".
 -}
 module Data.Numbers.Api (
   -- * Data types

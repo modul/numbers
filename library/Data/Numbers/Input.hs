@@ -17,7 +17,7 @@ module Data.Numbers.Input (
 import Control.Applicative
 import Data.Attoparsec.ByteString.Char8 hiding (Number, number)
 import Data.ByteString.Char8 (pack)
-import Data.Numbers.Client (Number (..), RangeItem (..), Date (..))
+import Data.Numbers.Api (Number (..), RangeItem (..), Date (..))
 
 -- | Alias for functions that parse an input string into some useful type
 type InputParser a = String -> Either String a
