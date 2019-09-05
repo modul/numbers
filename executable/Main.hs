@@ -69,7 +69,7 @@ run o A v = get <$> tryParse v
 getApiOptions :: Numbers -> [ApiOption]
 getApiOptions Numbers{..} = catMaybes options
     where options = [fragment >>= \p -> if p then Just Fragment else Nothing
-                  ,  DefaultMsg <$> pack <$> defaultMsg
+                  ,  DefaultMsg . pack <$> defaultMsg
                   ,  NotFound <$> notFound
                   ,  MinLimit <$> minLimit
                   ,  MaxLimit <$> maxLimit]
