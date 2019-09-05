@@ -4,7 +4,7 @@ Module      : Input
 Description : Utilities to parse numbers, dates and ranges
 
 These functions can be used to parse a specific syntax for numbers, ranges and dates,
-which can then be used to retrieve data from the API.
+which can then be used with lookup methods from "Client".
 -}
 
 module Data.Numbers.Input (

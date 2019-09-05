@@ -1,3 +1,10 @@
+{-|
+Module      : Client
+Description : Client interface for numbersapi.com
+
+numbersapi.com is a trivia database for numbers and dates. This module implements
+the client interface to retrieve entries from that service.
+-}
 module Data.Numbers.Client (
     module All,
     -- * Lookup methods

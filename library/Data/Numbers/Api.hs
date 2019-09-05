@@ -1,5 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-|
+Module      : Api
+Description : API definitions for numbersapi.com
 
+This module defines all endpoints and data types used to interface numbersapi.com.
+-}
 module Data.Numbers.Api (
   -- * Data types
   -- ** Search argument
