@@ -1,15 +1,21 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-|
+Module      : Api
+Description : API definitions for numbersapi.com
 
+This module defines all endpoints and data types used to interface numbersapi.com.
+More convenient client methods to retrieve number facts can be found in "Client".
+-}
 module Data.Numbers.Api (
   -- * Data types
   -- ** Search argument
-  Number (..), RangeElement (..), Date (..), Month, Day,
+  Number (..), RangeItem (..), Date (..), Month, Day,
   -- ** Lookup options
   ApiOptions, ApiOption (..), NotFoundAction (..),
   -- ** API endpoints
   ApiEndpoint (..),
   -- * API requests
-  apiCall, apiCallWith
+  defaultApiOptions, apiCall, apiCallWith
 ) where
 
 import Network.HTTP.Simple
@@ -22,25 +28,24 @@ apiHost = "numbersapi.com"
 
 -- * Data types
 
--- A month
+-- | A month
 type Month = Int
 
--- A day
+-- | A day
 type Day = Int
 
 -- | Describes a numerical argument used in API calls
 data Number = Number Int -- ^ a single integer
-            | Range [RangeElement] -- ^ a range of integers
+            | Range [RangeItem] -- ^ a range of integers
             | RandomNumber -- ^ let the API choose a random integer
 
 -- | Describes a date argument used in API calls
 data Date = Date Month Day
-          | DayOfYear Day
           | RandomDate -- ^ let the API choose a random date
 
 -- | Describes part of a numerical range
-data RangeElement = Single Int -- ^ single integer
-                  | Interval Int Int -- ^ a closed interval from a to b
+data RangeItem = Single Int -- ^ single integer
+               | Interval Int Int -- ^ a closed interval from a to b
 
 -- | Describes all available endpoints with its arguments
 data ApiEndpoint = GetTrivia Number
@@ -72,10 +77,9 @@ instance Show Number where
 
 instance Show Date where
   show (Date m d) = show m ++ "/" ++ show d
-  show (DayOfYear d) = show d
   show RandomDate = "random"
 
-instance Show RangeElement where
+instance Show RangeItem where
   show (Single x) = show x
   show (Interval a b) = show a ++ ".." ++ show b
 

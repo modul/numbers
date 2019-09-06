@@ -1,5 +1,11 @@
+{-|
+Module      : Client
+Description : Client interface for numbersapi.com
+
+numbersapi.com is a trivia database for numbers and dates. This module implements
+the client interface to retrieve entries from that service.
+-}
 module Data.Numbers.Client (
-    module All,
     -- * Lookup methods
     random, randomWith,
     trivia, triviaWith,
@@ -8,12 +14,12 @@ module Data.Numbers.Client (
     date, dateWith,
     -- * Convenience functions
     -- ** Getting specific entries
-    triviaFact, mathFact, yearFact, dateFact, dayOfYearFact,
+    triviaFact, mathFact, yearFact, dateFact,
     -- ** Getting random entries
     triviaRandom, mathRandom, yearRandom, dateRandom,
 ) where
 
-import Data.Numbers.Api as All
+import Data.Numbers.Api
 
 -- * Lookup methods
 
@@ -91,7 +97,3 @@ yearRandom = year RandomNumber
 -- | Retrieve a fact about a random date
 dateRandom :: IO String
 dateRandom = date RandomDate
-
--- | Retrieve a fact about the given day of (any) year
-dayOfYearFact :: Day -> IO String
-dayOfYearFact = date . DayOfYear
