@@ -41,7 +41,6 @@ data Number = Number Int -- ^ a single integer
 
 -- | Describes a date argument used in API calls
 data Date = Date Month Day
-          | DayOfYear Day
           | RandomDate -- ^ let the API choose a random date
 
 -- | Describes part of a numerical range
@@ -78,7 +77,6 @@ instance Show Number where
 
 instance Show Date where
   show (Date m d) = show m ++ "/" ++ show d
-  show (DayOfYear d) = show d
   show RandomDate = "random"
 
 instance Show RangeItem where

@@ -88,7 +88,6 @@ rangeItem =  Interval <$> decimal <* string ".." <*> decimal
 date :: Parser Date
 date =  endOfInput *> pure RandomDate
     <|> dateTuple
-    <|> DayOfYear <$> decimal <* endOfInput
 
 -- | Parse a date tuple as defined in API
 dateTuple :: Parser Date
