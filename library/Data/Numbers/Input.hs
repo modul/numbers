@@ -15,8 +15,10 @@ module Data.Numbers.Input (
 ) where
 
 import Control.Applicative
+import Data.Functor (($>))
 import Data.Attoparsec.ByteString.Char8 hiding (Number, number)
 import Data.ByteString.Char8 (pack)
+
 import Data.Numbers.Api (Number (..), RangeItem (..), Date (..))
 
 -- | Alias for functions that parse an input string into some useful type
@@ -75,7 +77,7 @@ makeParser p = parseOnly p . pack
 
 -- | Parse number as defined in API
 number :: Parser Number
-number =  endOfInput *> pure RandomNumber
+number =  endOfInput $> RandomNumber
       <|> Number <$> decimal <* endOfInput
       <|> Range  <$> rangeItem `sepBy1` "," <* endOfInput
 
@@ -86,7 +88,7 @@ rangeItem =  Interval <$> decimal <* string ".." <*> decimal
 
 -- | Parse a date as defined in API
 date :: Parser Date
-date =  endOfInput *> pure RandomDate
+date =  endOfInput $> RandomDate
     <|> dateTuple
 
 -- | Parse a date tuple consisting of month and day, separated by dateSep
