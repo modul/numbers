@@ -42,6 +42,7 @@ executables:
     - -rtsopts
     - -threaded
     - -with-rtsopts=-N
+    - -Wno-orphans
 
 tests:
   numbers-test-suite:
