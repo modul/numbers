@@ -57,6 +57,14 @@ numbers = Numbers {
         value = def &= args &= typ "NUMBER | DATE"
         } &= helpArg [explicit, name "help", name "h", groupname "Common flags"]
           &= versionArg [explicit, name "version", name "v", groupname "Common flags"]
+          &= details [
+              "NUMBER can be a single integer, an interval (from..to) or a ",
+              "comma-separated list of both.",
+              "",
+              "DATE specifies month and day of month in the form of MONTH/DAY.",
+              "",
+              "Without any arguments a number or date is randomly chosen by the API."
+          ]
 
 getOptions :: IO Options
 getOptions = do
