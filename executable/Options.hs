@@ -44,12 +44,12 @@ numbers :: Numbers
 numbers = Numbers {
         category = enum [
                 A &= ignore &= help "Choose a category (Trivia or Date) based on argument type" ,
-                T &= help "Get a trivia fact (default)" &= name "trivia",
-                M &= help "Get a math fact" &= name "math",
-                Y &= help "Get a year fact" &= name "year",
-                D &= help "Get a date fact" &= name "date"
+                T &= help "Get a trivia entry (default)" &= name "trivia",
+                M &= help "Get a math entry" &= name "math",
+                Y &= help "Get a year entry" &= name "year",
+                D &= help "Get a date entry" &= name "date"
             ] &= groupname "Categories",
-        fragment   = Nothing &= help "Return the fact as a sentence fragment" &= groupname "Response options",
+        fragment   = Nothing &= help "Return the entry as a sentence fragment" &= groupname "Response options",
         defaultMsg = Nothing &= help "Show this message if requested number has no entry" &= name "default" &= explicit &= typ "MESSAGE" &= groupname "Response options",
         notFound   = Nothing &= help "Selects an alternative if requested number has no entry" &= typ "CEIL | FLOOR | DEFAULT" &= groupname "Lookup options",
         minLimit   = Nothing &= help "Lower limit for random entries" &= name "min" &= explicit &= groupname "Lookup options",
