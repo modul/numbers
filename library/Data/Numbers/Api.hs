@@ -38,14 +38,17 @@ type Day = Int
 data Number = Number Int -- ^ a single integer
             | Range [RangeItem] -- ^ a range of integers
             | RandomNumber -- ^ let the API choose a random integer
+            deriving Eq
 
 -- | Describes a date argument used in API calls
 data Date = Date Month Day
           | RandomDate -- ^ let the API choose a random date
+          deriving Eq
 
 -- | Describes part of a numerical range
 data RangeItem = Single Int -- ^ single integer
                | Interval Int Int -- ^ a closed interval from a to b
+               deriving Eq
 
 -- | Describes all available endpoints with its arguments
 data ApiEndpoint = GetTrivia Number
