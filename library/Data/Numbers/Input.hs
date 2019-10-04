@@ -49,9 +49,6 @@ parseNumber = makeParser number
 -- >>> parseDate "12/24"
 -- Right (Date 12 24)
 --
--- >>> parseDate "123"
--- Right (DayOfYear 123)
---
 -- >>> parseDate ""
 -- Right (RandomDate)
 --
