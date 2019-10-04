@@ -7,7 +7,7 @@ These functions can be used to parse a specific syntax for numbers, ranges and d
 which can then be used with lookup methods from "Client".
 -}
 
-module Data.Numbers.Input (
+module Data.Numbers.Trivia.Input (
     -- * Data types
     InputParser, LookupType (..),
     -- * Parsing an input string into a lookup value
@@ -17,7 +17,7 @@ module Data.Numbers.Input (
 import Control.Applicative
 import Data.Attoparsec.ByteString.Char8 hiding (Number, number)
 import Data.ByteString.Char8 (pack)
-import Data.Numbers.Api (Number (..), RangeItem (..), Date (..))
+import Data.Numbers.Trivia.Api (Number (..), RangeItem (..), Date (..))
 
 -- | Alias for functions that parse an input string into some useful type
 type InputParser a = String -> Either String a
