@@ -56,7 +56,8 @@ numbers = Numbers {
         maxLimit   = Nothing &= help "Upper limit for random entries" &= name "max" &= explicit &= groupname "Lookup options",
         value = def &= args &= typ "NUMBER | DATE"
         } &= helpArg [explicit, name "help", name "h", groupname "Common flags"]
-          &= versionArg [explicit, name "version", name "v", groupname "Common flags"]
+          &= versionArg [ignore]
+          &= summary "Retrieve trivia about numbers from numbersapi.com"
           &= details [
               "NUMBER can be a single integer, an interval (from..to) or a ",
               "comma-separated list of both.",
