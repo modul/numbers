@@ -62,7 +62,7 @@ numbers = Numbers {
               "NUMBER can be a single integer, an interval (from..to) or a ",
               "comma-separated list of both.",
               "",
-              "DATE specifies month and day of month in the form of MONTH/DAY.",
+              "DATE specifies month and day of month separated by a dot, slash or dash.",
               "",
               "Without any arguments a number or date is randomly chosen by the API."
           ]

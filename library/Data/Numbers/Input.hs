@@ -49,13 +49,16 @@ parseNumber = makeParser number
 -- >>> parseDate "12/24"
 -- Right (Date 12 24)
 --
+-- >> parseDate "12-24"
+-- Right (Date 12 24)
+--
 -- >>> parseDate ""
 -- Right (RandomDate)
 --
 parseDate :: InputParser Date
 parseDate = makeParser date
 
--- | Use this to parse only a date in the form of Month/Day
+-- | Use this to parse only a date tuple, see dateTuple
 parseDateTuple :: InputParser Date
 parseDateTuple = makeParser dateTuple
 
@@ -86,6 +89,10 @@ date :: Parser Date
 date =  endOfInput *> pure RandomDate
     <|> dateTuple
 
--- | Parse a date tuple as defined in API
+-- | Parse a date tuple consisting of month and day, separated by dateSep
 dateTuple :: Parser Date
-dateTuple = Date <$> decimal <* char '/' <*> decimal <* endOfInput
+dateTuple =  Date <$> decimal <* dateSep <*> decimal <* endOfInput
+
+-- | Parse possible date separator characters
+dateSep :: Parser Char
+dateSep = char '-' <|> char '.' <|> char '/'
