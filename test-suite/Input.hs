@@ -50,4 +50,14 @@ spec_Input = parallel $ do
         it "does not allow signed numbers" $ do
             parseNumber "+1" `shouldSatisfy` isLeft
             parseNumber "-1" `shouldSatisfy` isLeft
-            
+    describe "tryParse" $ do
+        it "parses a single number" $
+            tryParse "5" `shouldBe` Right (IsNumber (Number 5))
+        it "parses an interval" $
+            tryParse "1..10" `shouldBe` Right (IsNumber (Range [Interval 1 10]))
+        it "parses an empty string (returns RandomNumber)" $
+            tryParse "" `shouldBe` Right (IsNumber RandomNumber)
+        it "parses a list of intervals and numbers" $
+            tryParse "1,10..20,30" `shouldBe` Right (IsNumber (Range [Single 1, Interval 10 20, Single 30]))
+        it "parses a date" $
+            tryParse "5/20" `shouldBe` Right (IsDate (Date 5 20))
