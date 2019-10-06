@@ -11,7 +11,7 @@ module Data.Numbers.Input (
     -- * Data types
     InputParser, LookupType (..),
     -- * Parsing an input string into a lookup value
-    tryParse, parseNumber, parseDate, parseDateTuple
+    tryParse, parseNumber, parseDate
 ) where
 
 import Control.Applicative
@@ -26,8 +26,6 @@ type InputParser a = String -> Either String a
 
 -- | Distinguishes a lookup value
 data LookupType = IsNumber Number | IsDate Date deriving (Show)
-
--- * Parsing the supplied argument
 
 -- | Use this to parse a number argument from an input string
 --
@@ -60,20 +58,18 @@ parseNumber = makeParser number
 parseDate :: InputParser Date
 parseDate = makeParser date
 
--- | Use this to parse only a date tuple, see dateTuple
-parseDateTuple :: InputParser Date
-parseDateTuple = makeParser dateTuple
-
 -- | Use this to parse either a date tuple or a number (if both could be possible)
 tryParse :: String -> Either String LookupType
 tryParse s =  IsDate <$> parseDateTuple s
           <|> IsNumber <$> parseNumber s
 
+-- | Use this to parse only a date tuple, see dateTuple
+parseDateTuple :: InputParser Date
+parseDateTuple = makeParser dateTuple
+
 -- | Builds an argument parser
 makeParser :: Parser a -> InputParser a
 makeParser p = parseOnly p . pack
-
--- * Actual parsers
 
 -- | Parse number as defined in API
 number :: Parser Number
