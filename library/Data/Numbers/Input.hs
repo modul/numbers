@@ -11,7 +11,7 @@ module Data.Numbers.Input (
     -- * Data types
     InputParser, LookupType (..),
     -- * Parsing an input string into a lookup value
-    tryParse, parseNumber, parseDate, parseDateTuple
+    tryParse, parseNumber, parseDate
 ) where
 
 import Control.Applicative
