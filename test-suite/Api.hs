@@ -2,7 +2,7 @@ module Api where
 
 import Test.Tasty.Hspec
 
-import Data.Numbers.Api
+import Data.Numbers.Trivia.Api
 
 spec_Endpoints :: Spec
 spec_Endpoints = parallel $ do

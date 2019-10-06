@@ -3,8 +3,8 @@ module Input where
 import Test.Tasty.Hspec
 import Data.Either (isLeft)
 
-import Data.Numbers.Input
-import Data.Numbers.Api
+import Data.Numbers.Trivia.Input
+import Data.Numbers.Trivia.Api
 
 spec_Input :: Spec
 spec_Input = parallel $ do
