@@ -10,9 +10,8 @@ module Options (
 
 import System.Console.CmdArgs.Implicit
 
-import Data.Numbers.Api
-import Data.Numbers.Input
-import Data.Numbers.Client 
+import Data.Numbers.Trivia
+import Data.Numbers.Trivia.Input
 
 import Data.ByteString.Char8 (pack)
 import Data.Maybe (catMaybes)

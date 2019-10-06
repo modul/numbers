@@ -5,7 +5,7 @@ Description : Client interface for numbersapi.com
 numbersapi.com is a trivia database for numbers and dates. This module implements
 the client interface to retrieve entries from that service.
 -}
-module Data.Numbers.Client (
+module Data.Numbers.Trivia.Client (
     -- * Lookup methods
     random, randomWith,
     trivia, triviaWith,
@@ -19,7 +19,7 @@ module Data.Numbers.Client (
     triviaRandom, mathRandom, yearRandom, dateRandom,
 ) where
 
-import Data.Numbers.Api
+import Data.Numbers.Trivia.Api
 
 -- * Lookup methods
 
