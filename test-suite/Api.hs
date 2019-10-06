@@ -1,8 +1,10 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Api where
 
 import Test.Tasty.Hspec
 
 import Data.Numbers.Trivia.Api
+import Data.Numbers.Trivia.Api.Options
 
 spec_Endpoints :: Spec
 spec_Endpoints = parallel $ do
@@ -33,4 +35,17 @@ spec_Endpoints = parallel $ do
             show (Date 5 20) `shouldBe` "5/20"
         specify "a random date is denoted by 'random'" $
             show RandomDate `shouldBe` "random"
-    -- context "query parameters" pending
+    context "query options" $ do
+        specify "Fragment is a query flag: ?fragment" $
+            optionToQueryItem Fragment `shouldBe` ("fragment", Nothing)
+        specify "DefaultMsg is a query option: ?default=string" $
+            optionToQueryItem (DefaultMsg "string") `shouldBe` ("default", Just "string")
+        specify "NotFound is a query option: ?notfound=ceil|floor|default" $ do
+            optionToQueryItem (NotFound CeilIfNotFound) `shouldBe` ("notfound", Just "ceil")
+            optionToQueryItem (NotFound FloorIfNotFound) `shouldBe` ("notfound", Just "floor")
+            optionToQueryItem (NotFound DefaultIfNotFound) `shouldBe` ("notfound", Just "default")
+        specify "MinLimit is a query option: ?min=x" $
+            optionToQueryItem (MinLimit 5) `shouldBe` ("min", Just "5")
+        specify "MaxLimit is a query option: ?max=x" $
+            optionToQueryItem (MaxLimit 5) `shouldBe` ("max", Just "5")
+        
