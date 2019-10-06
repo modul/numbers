@@ -53,6 +53,7 @@ tests:
     - numbers
     - tasty
     - tasty-hspec
+    - tasty-discover
     ghc-options:
     - -rtsopts
     - -threaded

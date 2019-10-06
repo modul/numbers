@@ -24,7 +24,7 @@ import Data.Numbers.Trivia.Api (Number (..), RangeItem (..), Date (..))
 type InputParser a = String -> Either String a
 
 -- | Distinguishes a lookup value
-data LookupType = IsNumber Number | IsDate Date deriving (Show)
+data LookupType = IsNumber Number | IsDate Date deriving (Show, Eq)
 
 -- | Use this to parse a number argument from an input string
 --
@@ -79,7 +79,7 @@ number =  endOfInput $> RandomNumber
 -- | Parse a range item as defined in API
 rangeItem :: Parser RangeItem
 rangeItem =  Interval <$> decimal <* string ".." <*> decimal
-            <|> Single   <$> decimal
+         <|> Single   <$> decimal
 
 -- | Parse a date as defined in API
 date :: Parser Date
