@@ -89,6 +89,5 @@ parseAndGet (Options A val api) = get <$> tryParse val
           get (IsDate   n) = dateWith api n
 
 run :: Options -> IO String
-run opts@(Options _ val _) = case parseAndGet opts of
-                                    Left _ -> return ("Invalid argument: " ++ val)
-                                    Right result -> result
+run = either invalidArgument id . parseAndGet
+    where invalidArgument = const $ return "Invalid argument"
